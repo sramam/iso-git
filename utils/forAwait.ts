@@ -5,7 +5,7 @@ import { getIterator } from "./getIterator.ts";
 // Currently 'for await' upsets my linters.
 export async function forAwait(
   iterable: AsyncIterator<unknown>,
-  cb: ((value: unknown) => Promise<void>) | ((value: unknown) => void)
+  cb: ((value: unknown) => Promise<void>) | ((value: unknown) => void),
 ) {
   const iter = getIterator(iterable);
   while (true) {

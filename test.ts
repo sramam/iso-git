@@ -1,4 +1,4 @@
-import { git, fs, http } from "./mod.ts";
+import { fs, git, http } from "./mod.ts";
 import { assertEquals } from "testing/asserts.ts";
 
 Deno.test(`clone a repo`, async () => {

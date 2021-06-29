@@ -1,10 +1,10 @@
-$schema: "https://x.nest.land/eggs@0.3.8/src/schema.json"
+$schema: 'https://x.nest.land/eggs@0.3.8/src/schema.json'
 name: iso-git
 entry: ./mod.ts
 description: Wraps `isomorphic-git` to work with deno.
-homepage: "https://github.com/sramam/iso-git"
-version: 0.1.0
-releaseType: patch
+homepage: 'https://github.com/sramam/iso-git'
+version: 0.1.1
+releaseType: undefined
 unstable: false
 unlisted: false
 files:
@@ -13,7 +13,7 @@ files:
   - http.ts
   - import_map.json
   - mod.ts
-  - README.m
+  - README.md
   - scripts.yml
 ignore: []
 checkFormat: false

@@ -22,10 +22,9 @@ export const request = async ({
     body = await collect(body);
   }
   const res = await fetch(url, { method, headers, body });
-  const iter =
-    res.body && res.body.getReader
-      ? fromStream(res.body)
-      : [new Uint8Array(await res.arrayBuffer())];
+  const iter = res.body && res.body.getReader
+    ? fromStream(res.body)
+    : [new Uint8Array(await res.arrayBuffer())];
   // convert Header object to ordinary JSON
   headers = {};
   for (const [key, value] of res.headers.entries()) {
