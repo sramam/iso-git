@@ -1,0 +1,16 @@
+{
+  "https://cdn.esm.sh/v43/async-lock@1.3.0/deno/async-lock.js": "753abd0ecceb622fbbd8d23fa4d57801ee254bc9008f512d1f8c5fe662498c46",
+  "https://cdn.esm.sh/v43/clean-git-ref@2.0.1/deno/clean-git-ref.js": "d5ef2e8db620af613144274b003c98edd1e74ab03082f0256b4a6360f726405a",
+  "https://cdn.esm.sh/v43/crc-32@1.2.0/deno/crc-32.js": "aa6efb38d84ece27df6263b3a3acc9bc603fa9644e8233e30af803545f37ac54",
+  "https://cdn.esm.sh/v43/diff3@0.0.3/deno/diff3.js": "253d85c7725f558497a5a97093d15e88341c79f438e93ab75e47e63eef30beb8",
+  "https://cdn.esm.sh/v43/ignore@5.1.8/deno/ignore.js": "c8dd33c88410e5fe7e0e42eb027023e5453f577bd0198815b2e61d32918f0200",
+  "https://cdn.esm.sh/v43/inherits@2.0.4/deno/inherits.js": "3822a5fd351b766e51ed3227e407a37aa0ca3bfb31593edb48fb233c5157cf0b",
+  "https://cdn.esm.sh/v43/isomorphic-git@1.8.3/deno/isomorphic-git.js": "22045eb981b48d0ab676776e6e41acd9d49ac190f2f6795010f3b6408bdf2acf",
+  "https://cdn.esm.sh/v43/isomorphic-git@1.8.3/index.d.ts": "21d6a4b4ab6de7db61580f500b8f4e9d3e1bb12d8047baf2725ddcd1aab47228",
+  "https://cdn.esm.sh/v43/node_buffer.js": "d79882b052ed8c9522d1efe8f627dbdb9082b0c68a06f679f3f90bf187d50a80",
+  "https://cdn.esm.sh/v43/node_process.js": "1dd60ba93dbdcb39a947d602434667e1dd10a591cfba6f505d11309cd6106284",
+  "https://cdn.esm.sh/v43/pako@1.0.11/deno/pako.js": "8cd22322e729f77860b640af3fc675b071a9ce6dd2530319751604b93fe3a704",
+  "https://cdn.esm.sh/v43/pify@4.0.1/deno/pify.js": "82cc27a21c8f64c0ae0709478a00c3e0abf574eb3509889cd5a4923484109fd6",
+  "https://cdn.esm.sh/v43/safe-buffer@5.2.1/deno/safe-buffer.js": "a9d2e1d3bf2198d2ee63a3ee2389adc07b40f3f5bb2a696791c7e1b003cad113",
+  "https://esm.sh/isomorphic-git": "352d4cbc2b472f82a7673692a8b8da86047561f6fa7eb01f484440aa6329f7a7"
+}

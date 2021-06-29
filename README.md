@@ -11,12 +11,7 @@ to get it setup to work within deno.
 ### Installation
 
 ```
-trex install --nest iso-git
-```
-
-```
-// import { git, http, fs } from 'https://x.nest.land/iso-git@0.1.2/mod.ts'
-import { git,http, fs } from 'iso-git'
+import { git, http, fs } from 'https://x.nest.land/iso-git@0.1.3/mod.ts'
 
 await fs.promises.mkdir('.tmp/lightening-fs', { recursive: true });
 await git.clone({

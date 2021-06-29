@@ -1,5 +1,6 @@
 scripts: 
-  test: deno test --allow-read --allow-write --allow-net --unstable --import-map=./import_map.json test.ts
+  test: deno test --allow-read --allow-write --allow-net --unstable test.ts
   lint: deno lint --ignore=.tmp,.git
   fmt: deno fmt --ignore=.tmp,.git,deps
-  bundle: deno bundle --unstable --import-map=./import_map.json --lock=lock.json --lock-write mod.ts bundle.js
+  lock: deno cache --lock=lock.json --lock-write mod.ts
+  bundle: deno bundle --unstable --lock=lock.json --lock-write mod.ts bundle.js

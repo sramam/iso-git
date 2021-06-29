@@ -1,5 +1,5 @@
 import { fs, git, http } from "./mod.ts";
-import { assertEquals } from "testing/asserts.ts";
+import { assertEquals } from "./dev_deps.ts";
 
 Deno.test(`clone a repo`, async () => {
   const dir = `.tmp/lightning-fs`;

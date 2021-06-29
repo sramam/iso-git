@@ -1,6 +1,0 @@
-{
-  "imports": {
-    "isomorphic-git": "https://esm.sh/isomorphic-git",
-    "testing/": "https://deno.land/std/testing/"
-  }
-}
