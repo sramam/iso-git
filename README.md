@@ -9,10 +9,9 @@ guide on how to use `isomorphic-git`. This section limits it self to showing how
 to get it setup to work within deno.
 
 ### Installation
+
 ```
 trex install --nest iso-git
-```
-```
 ```
 
 ```

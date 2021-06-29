@@ -4,6 +4,7 @@
   "deno.unstable": true,
   "deno.importMap": "./import_map.json",
   "cSpell.words": [
-    "deno"
+    "deno",
+    "deps"
   ]
 }
