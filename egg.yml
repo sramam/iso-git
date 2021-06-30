@@ -3,12 +3,13 @@ name: iso-git
 entry: ./mod.ts
 description: Wraps `isomorphic-git` to work with deno.
 homepage: 'https://github.com/sramam/iso-git'
-version: 0.1.3
+version: 0.1.4
 releaseType: null
 unstable: false
 unlisted: false
 files:
   - utils/*
+  - deps.ts
   - dn-fs.ts
   - http.ts
   - mod.ts
