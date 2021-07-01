@@ -85,7 +85,7 @@ const readFile = async (path: string, options?: ReadOptions) => {
       ? await Deno.readTextFile(path)
       : await Deno.readFile(path);
   } catch (err) {
-    if (err.message.match(/cannot find the (file|path) specified/)) {
+    if (err.message.match(/(cannot find the (file|path) specified)|(No such file or directory)/)) {
       const error = new Error(
         `ENOENT: no such file or directory, open '${path}'`,
       ) as NodeError;
@@ -160,7 +160,7 @@ const unlink = async (path: string) => {
   try {
     await Deno.remove(path, { recursive: false });
   } catch (err) {
-    if (err.message.match(/cannot find the file specified/)) {
+    if (err.message.match(/(cannot find the (file|path) specified)|(No such file or directory)/)) {
       const error = new Error(
         `ENOENT: no such file or directory, open '${path}'`,
       ) as NodeError;
@@ -200,7 +200,7 @@ const readdir = async (
       return result;
     }
   } catch (err) {
-    if (err.message.match(/NotFound.*/)) {
+    if (err.message.match(/(cannot find the (file|path) specified)|(No such file or directory)/)) {
       const error = new Error(
         `ENOENT: no such file or directory, open '${path}'`,
       ) as NodeError;
@@ -241,7 +241,7 @@ const mkdir = async (
     });
   } catch (err) {
     if (
-      err.message.match(/Cannot create a file when that file already exists/)
+      err.message.match(/(Cannot create a file when that file already exists)|(File exists)/)
     ) {
       const error = new Error(
         `EEXIST: file already exists, mkdir '${path}'`,
@@ -249,7 +249,7 @@ const mkdir = async (
       error.code = "EEXIST";
       error.syscall = "mkdir";
       throw error;
-    } else if (err.message.match(/cannot find the path specified/)) {
+    } else if (err.message.match(/(cannot find the (file|path) specified)|(No such file or directory)/)) {
       const error = new Error(
         `ENOENT: no such file or directory, open '${path}'`,
       ) as NodeError;
@@ -279,7 +279,7 @@ const rmdir = async (
   try {
     await Deno.remove(path, { recursive: options.recursive });
   } catch (err) {
-    if (err.message.match(/cannot find the path specified/)) {
+    if (err.message.match(/(cannot find the (file|path) specified)|(No such file or directory)/)) {
       const error = new Error(
         `ENOENT: no such file or directory, open '${path}'`,
       ) as NodeError;
@@ -309,7 +309,7 @@ const stat = async (
   } catch (err) {
     // isomorphic git also processes `ENOTDIR`, but deno
     // doesn't seem to raise it.
-    if (err.message.match(/cannot find the (file|path) specified/)) {
+    if (err.message.match(/(cannot find the (file|path) specified)|(No such file or directory)/)) {
       const error = new Error(
         `ENOENT: no such file or directory, stat '${path}'`,
       ) as NodeError;
@@ -351,7 +351,7 @@ const lstat = async (path: string) => {
     result.ctimeMs = new Date(result.ctime).getTime();
     return result;
   } catch (err) {
-    if (err.message.match(/cannot find the (file|path) specified/)) {
+    if (err.message.match(/(cannot find the (file|path) specified)|(No such file or directory)/)) {
       const error = new Error(
         `ENOENT: no such file or directory, open '${path}'`,
       ) as NodeError;
@@ -381,7 +381,7 @@ const readlink = async (
     // this can be a deno only problem if we have links to binary files.
     return await Deno.readLink(path);
   } catch (err) {
-    if (err.message.match(/cannot find the path specified/)) {
+    if (err.message.match(/(cannot find the (file|path) specified)|(No such file or directory)/)) {
       const error = new Error(
         `ENOENT: no such file or directory, open '${path}'`,
       ) as NodeError;
