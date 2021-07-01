@@ -52,17 +52,18 @@ interface NodeError extends Error {
 
 export type CallbackFn = (
   err?: NodeError | Error | null,
-  result?: unknown,
+  result?: unknown
 ) => void;
 
 function resolve<T>(
   defaults: T,
   options: T | CallbackFn,
-  cb?: CallbackFn,
+  cb?: CallbackFn
 ): { options?: T; cb: CallbackFn } {
-  const _options: T = typeof options === "function"
-    ? defaults
-    : { ...defaults, ...(options as T) };
+  const _options: T =
+    typeof options === "function"
+      ? defaults
+      : { ...defaults, ...(options as T) };
   cb = typeof cb === "function" ? cb : (options as CallbackFn);
   if (!cb) {
     throw new Error(`Callback function not defined`);
@@ -85,9 +86,9 @@ const readFile = async (path: string, options?: ReadOptions) => {
       ? await Deno.readTextFile(path)
       : await Deno.readFile(path);
   } catch (err) {
-    if (err.message.match(/cannot find the (file|path) specified/)) {
+    if (err instanceof Deno.errors.NotFound) {
       const error = new Error(
-        `ENOENT: no such file or directory, open '${path}'`,
+        `ENOENT: no such file or directory, open '${path}'`
       ) as NodeError;
       error.code = "ENOENT";
       error.syscall = "open";
@@ -115,7 +116,7 @@ const writeFile = async (
     encoding: "utf8",
     mode: 0o666,
     flag: "w",
-  },
+  }
 ) => {
   debug(`writeFile: ${path}`);
   try {
@@ -123,23 +124,21 @@ const writeFile = async (
       options.encoding === "utf8"
         ? await Deno.writeTextFile(path, data as string)
         : await Deno.writeFile(
-          path,
-          new Uint8Array(new TextEncoder().encode(data as string)),
-        );
+            path,
+            new Uint8Array(new TextEncoder().encode(data as string))
+          );
     } else {
       options.encoding === "utf8"
         ? await Deno.writeTextFile(
-          path,
-          new TextDecoder().decode(data as ArrayBuffer),
-        )
+            path,
+            new TextDecoder().decode(data as ArrayBuffer)
+          )
         : await Deno.writeFile(path, new Uint8Array(data as ArrayBuffer));
     }
   } catch (err) {
-    if (
-      err.message.match(/Cannot create a file when that file already exists/)
-    ) {
+    if (err instanceof Deno.errors.AlreadyExists) {
       const error = new Error(
-        `EEXIST: file already exists, write '${path}'`,
+        `EEXIST: file already exists, write '${path}'`
       ) as NodeError;
       error.code = "EEXIST";
       error.syscall = "write";
@@ -160,9 +159,9 @@ const unlink = async (path: string) => {
   try {
     await Deno.remove(path, { recursive: false });
   } catch (err) {
-    if (err.message.match(/cannot find the file specified/)) {
+    if (err instanceof Deno.errors.NotFound) {
       const error = new Error(
-        `ENOENT: no such file or directory, open '${path}'`,
+        `ENOENT: no such file or directory, open '${path}'`
       ) as NodeError;
       error.code = "ENOENT";
       error.syscall = "open";
@@ -186,7 +185,7 @@ const readdir = async (
   options: ReaddirOptions = {
     encoding: "utf8",
     withFileTypes: false,
-  },
+  }
 ) => {
   debug(`readdir ${path}`);
   try {
@@ -200,9 +199,9 @@ const readdir = async (
       return result;
     }
   } catch (err) {
-    if (err.message.match(/NotFound.*/)) {
+    if (err instanceof Deno.errors.NotFound) {
       const error = new Error(
-        `ENOENT: no such file or directory, open '${path}'`,
+        `ENOENT: no such file or directory, open '${path}'`
       ) as NodeError;
       error.code = "ENOENT";
       error.syscall = "open";
@@ -226,7 +225,7 @@ const mkdir = async (
   options: MkdirOptions = {
     recursive: false,
     mode: 0o777,
-  },
+  }
 ) => {
   debug(`mkdir ${path}`);
   try {
@@ -240,18 +239,16 @@ const mkdir = async (
       mode: typeof mode === "string" ? parseInt(mode) : mode,
     });
   } catch (err) {
-    if (
-      err.message.match(/Cannot create a file when that file already exists/)
-    ) {
+    if (err instanceof Deno.errors.AlreadyExists) {
       const error = new Error(
-        `EEXIST: file already exists, mkdir '${path}'`,
+        `EEXIST: file already exists, mkdir '${path}'`
       ) as NodeError;
       error.code = "EEXIST";
       error.syscall = "mkdir";
       throw error;
-    } else if (err.message.match(/cannot find the path specified/)) {
+    } else if (err instanceof Deno.errors.NotFound) {
       const error = new Error(
-        `ENOENT: no such file or directory, open '${path}'`,
+        `ENOENT: no such file or directory, open '${path}'`
       ) as NodeError;
       error.code = "ENOENT";
       error.syscall = "open";
@@ -273,15 +270,15 @@ export interface RmdirOptions {
  */
 const rmdir = async (
   path: string,
-  options: RmdirOptions = { recursive: false },
+  options: RmdirOptions = { recursive: false }
 ) => {
   debug(`rmdir ${path}`);
   try {
     await Deno.remove(path, { recursive: options.recursive });
   } catch (err) {
-    if (err.message.match(/cannot find the path specified/)) {
+    if (err instanceof Deno.errors.NotFound) {
       const error = new Error(
-        `ENOENT: no such file or directory, open '${path}'`,
+        `ENOENT: no such file or directory, open '${path}'`
       ) as NodeError;
       error.code = "ENOENT";
       error.syscall = "open";
@@ -301,7 +298,7 @@ export interface StatOptions {
  */
 const stat = async (
   path: string,
-  _options: StatOptions = { bigint: false },
+  _options: StatOptions = { bigint: false }
 ) => {
   try {
     debug(`stat ${path}`);
@@ -309,9 +306,9 @@ const stat = async (
   } catch (err) {
     // isomorphic git also processes `ENOTDIR`, but deno
     // doesn't seem to raise it.
-    if (err.message.match(/cannot find the (file|path) specified/)) {
+    if (err instanceof Deno.errors.NotFound) {
       const error = new Error(
-        `ENOENT: no such file or directory, stat '${path}'`,
+        `ENOENT: no such file or directory, stat '${path}'`
       ) as NodeError;
       error.code = "ENOENT";
       error.syscall = "stat";
@@ -351,9 +348,9 @@ const lstat = async (path: string) => {
     result.ctimeMs = new Date(result.ctime).getTime();
     return result;
   } catch (err) {
-    if (err.message.match(/cannot find the (file|path) specified/)) {
+    if (err instanceof Deno.errors.NotFound) {
       const error = new Error(
-        `ENOENT: no such file or directory, open '${path}'`,
+        `ENOENT: no such file or directory, open '${path}'`
       ) as NodeError;
       error.code = "ENOENT";
       error.syscall = "open";
@@ -373,7 +370,7 @@ export interface ReadlinkOptions {
  */
 const readlink = async (
   path: string,
-  _options: ReadlinkOptions = { encoding: "utf8" },
+  _options: ReadlinkOptions = { encoding: "utf8" }
 ) => {
   debug(`readlink ${path}`);
 
@@ -381,9 +378,9 @@ const readlink = async (
     // this can be a deno only problem if we have links to binary files.
     return await Deno.readLink(path);
   } catch (err) {
-    if (err.message.match(/cannot find the path specified/)) {
+    if (err instanceof Deno.errors.NotFound) {
       const error = new Error(
-        `ENOENT: no such file or directory, open '${path}'`,
+        `ENOENT: no such file or directory, open '${path}'`
       ) as NodeError;
       error.code = "ENOENT";
       error.syscall = "open";
@@ -401,7 +398,7 @@ const readlink = async (
 const symlink = async (
   target: string,
   path: string,
-  type: "file" | "dir" = "file",
+  type: "file" | "dir" = "file"
 ) => {
   debug(`symlink ${target} -> ${path}`);
 
@@ -439,7 +436,7 @@ export const fs = {
   readFile: (
     path: string,
     options: ReadOptions | CallbackFn,
-    cb?: CallbackFn,
+    cb?: CallbackFn
   ) => {
     const resolved = resolve({ encoding: "utf8" }, options, cb);
     readFile(path, resolved.options)
@@ -451,7 +448,7 @@ export const fs = {
     path: string,
     data: string | ArrayBuffer,
     options: WriteOptions | CallbackFn,
-    cb?: CallbackFn,
+    cb?: CallbackFn
   ) => {
     const resolved = resolve(
       {
@@ -460,7 +457,7 @@ export const fs = {
         flag: "w",
       },
       options,
-      cb,
+      cb
     );
     writeFile(path, data, resolved.options)
       .then((result) => resolved.cb(null, result))
@@ -477,7 +474,7 @@ export const fs = {
   readdir: (
     path: string,
     options: ReaddirOptions | CallbackFn,
-    cb?: CallbackFn,
+    cb?: CallbackFn
   ) => {
     const resolved = resolve(
       {
@@ -485,7 +482,7 @@ export const fs = {
         withFileTypes: false,
       },
       options,
-      cb,
+      cb
     );
     readdir(path, resolved.options)
       .then((result) => resolved.cb(null, result))
@@ -495,7 +492,7 @@ export const fs = {
   mkdir: (
     path: string,
     options: MkdirOptions | CallbackFn,
-    cb?: CallbackFn,
+    cb?: CallbackFn
   ) => {
     const resolved = resolve({ recursive: false, mode: 0o777 }, options, cb);
     mkdir(path, resolved.options)
@@ -506,7 +503,7 @@ export const fs = {
   rmdir: (
     path: string,
     options: RmdirOptions | CallbackFn,
-    cb?: CallbackFn,
+    cb?: CallbackFn
   ) => {
     const resolved = resolve({ recursive: false }, options, cb);
     rmdir(path, resolved.options)
@@ -531,7 +528,7 @@ export const fs = {
   readlink: (
     path: string,
     options: ReadlinkOptions | CallbackFn,
-    cb?: CallbackFn,
+    cb?: CallbackFn
   ) => {
     const resolved = resolve({ encoding: "utf8" }, options, cb);
     readlink(path, resolved.options)
@@ -543,7 +540,7 @@ export const fs = {
     target: string,
     path: string,
     type?: "file" | "dir" | CallbackFn,
-    cb?: CallbackFn,
+    cb?: CallbackFn
   ) => {
     const resolved = resolve({ type: "file" }, { type }, cb);
     symlink(target, path, resolved.options?.type as "file" | "dir")
