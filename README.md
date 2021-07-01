@@ -11,7 +11,7 @@ to get it setup to work within deno.
 ### Installation
 
 ```
-import { git, http, fs } from 'https://x.nest.land/iso-git@0.1.6/mod.ts'
+import { git, http, fs } from 'https://x.nest.land/iso-git@0.1.7/mod.ts'
 
 await fs.promises.mkdir('.tmp/lightening-fs', { recursive: true });
 await git.clone({
